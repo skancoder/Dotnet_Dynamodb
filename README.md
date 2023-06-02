@@ -153,7 +153,7 @@ https://aws.amazon.com/free
 - map client-side classes to our dynamodb table. each object instance then maps to item in correspoding table
 - can do most things with is model but missing features like ability to create, update, delete dynamodb table
 
-![Alt Text](images/37.png)
+  ![Alt Text](images/37.png)
 
 - overall ranking is by taking all users ranking and take average
 
@@ -165,3 +165,46 @@ https://aws.amazon.com/free
 - can use SCAN and QUERY with this model
 - requires little more code than object persistence model
 - here also cannot create, update, delete dynamodb tables
+
+## 3. Low level model
+
+- wraps directs calls to dyanmodb service
+- gives us all features, including ability to create, update and delete tables
+- requires to write significant amount of extra code
+
+  ![Alt Text](images/38.png)
+
+# Testing
+
+- use local dynamodb test instance to run tests instead of aws instance. it has a docker image
+  ![Alt Text](images/39.png)
+
+* https://docs.docker.com/desktop/install/windows-install/
+  > docker --version
+
+> install-package microsoft.aspnetcore.testhost\
+> install-package microsoft.aspnetcore.all
+
+- local dynamodb image can be pulled in C# code itself in test setup, or
+
+> docker pull amazon/dynamodb-local
+> docker run -d -p 8000:8000 amazon/dynamodb-local
+
+- startup.cs
+
+```
+if (_env.IsDevelopment())
+{
+    services.AddSingleton<IAmazonDynamoDB>(cc =>
+    {
+        var clientConfig = new AmazonDynamoDBConfig { ServiceURL = "http://localhost:8000" };
+        return new AmazonDynamoDBClient(clientConfig);
+    });
+}
+else
+{
+    services.AddAWSService<IAmazonDynamoDB>();
+}
+```
+
+-
