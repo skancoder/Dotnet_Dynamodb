@@ -144,9 +144,9 @@ https://aws.amazon.com/free
   - use created IAM user credentials
     ![Alt Text](images/36.png)
 
-# 3 Dynamodb .NET SDK Models
+# .Net SDK 3 models
 
-## 1. Object persistence model
+## 1. Object persistance model
 
 - wrapper around low level model
 - easiest model to code aganist
